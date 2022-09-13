@@ -21,17 +21,6 @@ def play(w):
 	sounddevice.play(d, f)
 	return sounddevice.wait()
 
-def send(address, message):
-	print(f"sending {message} -> {address}")
-	msg = oscbuildparse.OSCMessage(f"/{config['server_name']}/{address}", None, [message])
-	osc_send(msg, 'tester')
-	myOscServer.process()
-
-def run_a_test():
-	print("Running test : you should hear a sound, then OSCSoundTriggerServer should Terminate.")
-	send('play/me', 'cherokee.wav')
-	send('terminate/me', None)
-
 class OSCserver:
 
 	def __init__(self, n, a, c):
@@ -42,6 +31,7 @@ class OSCserver:
 		self.port = c
 		self.clock = 0
 		self.proc_count = 0
+		self.sleeping = False
 		osc_udp_server(self.address, self.port, self.name)
 		osc_method(f"/{self.name}/play/*", self.receiver)
 		osc_method(f"/{self.name}/terminate/*", self.bedtime)
@@ -62,10 +52,8 @@ class OSCserver:
 		return True if self.clock == 0 else False
 
 	def bedtime(self, z):
-		global execute
 		print(f"Terminate Execution Command Received!")
-		execute = False
-		print(f"execute = {execute}")
+		self.sleeping = True
 
 	def terminate(self):
 		print(f"Goodbye {self.name} <3.")
@@ -79,16 +67,15 @@ if __name__ == '__main__':
 	config = read_config()
 	#Make Server
 	myOscServer = OSCserver(config['server_name'], config['network']['address'], config['network']['port'])
-	#Setup Client for testing
-	osc_udp_client(config['network']['address'], config['network']['port'], 'tester')
+	#Init a Runtime Check
 	execute = True
-	run_a_test()
 	while execute:
 		#Normal Exe
 		if myOscServer.tick():
 			myOscServer.process()
+			execute = False if myOscServer.sleeping else True
 		#Optional Safety
-		if perf_counter() > 30:
+		if perf_counter() > 10:
 			execute = False
 		
 	myOscServer.terminate()

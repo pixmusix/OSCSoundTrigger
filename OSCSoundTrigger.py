@@ -3,6 +3,7 @@ import soundfile
 from osc4py3.as_eventloop import *
 from osc4py3 import oscmethod, oscbuildparse
 
+import threading
 import json
 from time import perf_counter, sleep
 
@@ -48,18 +49,20 @@ class OSCserver:
 
 	def process(self):
 		print(f"{self.name} is listening... ({self.proc_count})")
+		self.proc_count = self.proc_count + 1
 		osc_process()
 
 	def receiver(self, x):
 		print(f"received {x} @ /play/*")
-		play(x)
+		sound = threading.Thread(target=play, args=(x,))
+		sound.start()
 
 	def tick(self):
 		self.clock = (self.clock + 1) % 100000
-		self.proc_count += 1
 		return True if self.clock == 0 else False
 
 	def bedtime(self, z):
+		global execute
 		print(f"Terminate Execution Command Received!")
 		execute = False
 		print(f"execute = {execute}")

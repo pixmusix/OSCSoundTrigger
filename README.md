@@ -20,12 +20,13 @@ python3 testbed.py
 ```
 ##### When you're comfident you can receive external messaging remove the auto exit safety.
 ```python
-#Optional Safety
-if perf_counter() > 10:
-	execute = False
+while execute:
+	#Optional Safety
+	if perf_counter() > 10:
+		execute = False
 ```
 
-##Creating a custom handler
+## Creating a custom handler
 
 ##### Documentation
 https://osc4py3.readthedocs.io/en/latest/userdoc.html

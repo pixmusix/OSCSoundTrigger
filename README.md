@@ -9,7 +9,7 @@ Simple script for triggering .wav files using OSC.
 ## Getting Started
 
 #### Edit the config.json file to a IP4 and port of your preference.
-WARNING : Please put your personal configuration into a .gitignore file. Pull requests with updates to the config.json will be rejected.
+WARNING : Please put your personal configuration into a .gitignore file.
 ```json
 {"network": {"address": "MY_ADDRESS","port": "MY_PORT"},
 	"server_name": "MY_SERVER"}

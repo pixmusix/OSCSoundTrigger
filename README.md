@@ -18,7 +18,7 @@ WARNING : Please put your personal configuration into a .gitignore file.
 ```bash
 python3 testbed.py
 ```
-#### When you're comfident you can receive external messaging remove the auto exit safety.
+#### When you're confident you can receive external messaging remove the auto exit safety.
 ```python
 while execute:
 	#Optional Safety

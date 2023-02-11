@@ -56,7 +56,7 @@ sd.default.device = 'digital output'
 ```
 
 #### The Play Function
-play(x) expects the relative path of a play file.
+play(x) expects the relative path of a sound file.
 Simplest soltion is to create a folder of audio files in your repos local directory.
 WARNING: Please put any audio files into your .gitignore. Pull requests with .wav files will not be accepted.
 
